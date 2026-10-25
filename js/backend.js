@@ -5,6 +5,7 @@
   let client = null;
   let currentUser = null;
   let startupError = '';
+  const invitationSetupFlow = new URLSearchParams(window.location.search).get('flow') === 'invite';
   let readyResolve;
   const ready = new Promise(resolve => { readyResolve = resolve; });
 
@@ -75,15 +76,33 @@
         currentUser = null;
         emit('signed-out');
       } else if (session?.user) {
-        queueMicrotask(() => loadProfile(session.user, event === 'PASSWORD_RECOVERY' ? 'password-recovery' : 'signed-in')
-          .catch(error => emit('error', error)));
+        if (invitationSetupFlow) {
+          currentUser = null;
+          emit('invite-password-setup');
+        } else {
+          queueMicrotask(() => loadProfile(session.user, event === 'PASSWORD_RECOVERY' ? 'password-recovery' : 'signed-in')
+            .catch(error => emit('error', error)));
+        }
       }
     });
     client.auth.getSession().then(({ data, error }) => {
       if (error) throw error;
+      if (invitationSetupFlow) {
+        if (data.session?.user) {
+          currentUser = null;
+          emit('invite-password-setup');
+        } else {
+          emit('invite-link-error', new Error('El enlace de invitación ya se usó, venció o no pudo validarse. Solicita una nueva invitación al administrador.'));
+        }
+        return;
+      }
       return loadProfile(data.session?.user || null);
     }).then(() => readyResolve(true)).catch(error => {
-      emit('error', error);
+      if (invitationSetupFlow) {
+        emit('invite-link-error', new Error('No se pudo validar la sesión de invitación. Solicita un nuevo enlace al administrador.'));
+      } else {
+        emit('error', error);
+      }
       readyResolve(false);
     });
   }
@@ -149,6 +168,7 @@
     async refreshProfile() {
       await ready;
       if (!client) return null;
+      if (invitationSetupFlow) return null;
       const { data, error } = await client.auth.getUser();
       if (error) throw new Error(normalizeError(error));
       await loadProfile(data.user || null);
@@ -157,7 +177,7 @@
     async resetPassword(email) {
       await ready;
       if (!client) throw new Error('El backend todavía no está configurado.');
-      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/` });
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: config.publicAppUrl || `${location.origin}/` });
       if (error) throw new Error(normalizeError(error));
     },
     async updatePassword(password) {

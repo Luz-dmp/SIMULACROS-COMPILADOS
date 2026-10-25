@@ -7,6 +7,14 @@ export type UserConfiguration = {
 };
 
 const areaCodes = new Set(["Mat", "Lec", "Soc", "Nat", "Ing"]);
+const publicAppUrl =
+  "https://luz-dmp.github.io/SIMULACROS-COMPILADOS/";
+
+export function publicAuthRedirectUrl(flow?: "invite"): string {
+  const url = new URL(publicAppUrl);
+  if (flow) url.searchParams.set("flow", flow);
+  return url.toString();
+}
 
 export function parseAllowedOrigins(value: string | undefined): string[] {
   return (value ?? "").split(",").map((origin) => origin.trim()).filter(

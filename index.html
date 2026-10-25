@@ -14,7 +14,7 @@
     <div class="auth-brand">CATALYST</div>
     <p class="auth-kicker">Acceso seguro · Catalyst Education</p>
     <h2 id="authTitle">Ingresar al panel</h2>
-    <p class="auth-note">Usa las credenciales de tu cuenta institucional.</p>
+    <p class="auth-note" id="authDescription">Usa las credenciales de tu cuenta institucional.</p>
     <form id="authForm" class="auth-form">
       <label class="field auth-field">Correo electrónico
         <input id="authEmail" name="email" type="email" required autocomplete="username">
@@ -22,7 +22,6 @@
       <label class="field auth-field">Contraseña
         <input id="authPassword" name="password" type="password" required autocomplete="current-password">
       </label>
-      <div id="authStatus" class="form-status" role="status" aria-live="polite"></div>
       <button class="primary auth-submit" type="submit">Iniciar sesión</button>
     </form>
     <form id="passwordRecoveryForm" class="auth-form" hidden>
@@ -34,6 +33,8 @@
       </label>
       <button class="primary auth-submit" type="submit">Guardar nueva contraseña</button>
     </form>
+    <div id="authStatus" class="form-status" role="status" aria-live="polite"></div>
+    <a id="inviteReturnLogin" class="linkbtn invite-return-link" href="./" hidden>Ir al inicio de sesión</a>
     <button id="forgotPassword" class="linkbtn" type="button">Olvidé mi contraseña</button>
     <div class="auth-meta">La sesión, el rol y los permisos se validan mediante el servicio de autenticación y políticas de acceso del servidor.</div>
   </div>

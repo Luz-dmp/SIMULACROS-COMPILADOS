@@ -14,6 +14,9 @@
   let userInviteNeedsVerification = false;
   let userOperationInProgress = false;
   let passwordRecovery = false;
+  let invitationPasswordSetup = new URLSearchParams(location.search).get('flow') === 'invite';
+  let invitationLinkError = false;
+  let invitationPasswordSaved = false;
   let remoteDashboard = { documents: [], compilations: [], operations: [] };
   let dashboardRequest = 0;
   let dashboardLoadFailed = false;
@@ -432,9 +435,37 @@
     const chip = $('userChip');
     const overlay = $('authOverlay');
     const appShell = $('appShell');
+    if (invitationPasswordSetup) {
+      chip.textContent = 'Configuración de cuenta';
+      overlay.classList.remove('hidden');
+      $('authForm').hidden = true;
+      $('forgotPassword').hidden = true;
+      $('passwordRecoveryForm').hidden = invitationLinkError || invitationPasswordSaved;
+      $('inviteReturnLogin').hidden = !invitationLinkError && !invitationPasswordSaved;
+      $('authTitle').textContent = invitationPasswordSaved
+        ? 'Contraseña configurada'
+        : invitationLinkError
+        ? 'Invitación no disponible'
+        : 'Configura tu contraseña';
+      $('authDescription').textContent = invitationPasswordSaved
+        ? 'Tu contraseña quedó guardada. Un administrador debe activar tu cuenta antes de que puedas iniciar sesión.'
+        : invitationLinkError
+        ? 'El enlace no pudo validarse. Puede haber vencido o ya haber sido utilizado; solicita una nueva invitación al administrador.'
+        : 'Elige una contraseña segura y confírmala. La cuenta seguirá pendiente de activación administrativa.';
+      appShell.inert = true;
+      appShell.style.filter = 'blur(1.5px)';
+      renderDashboard();
+      return;
+    }
     if (!user) {
       chip.textContent = 'Invitado';
       overlay.classList.remove('hidden');
+      $('authTitle').textContent = 'Ingresar al panel';
+      $('authDescription').textContent = 'Usa las credenciales de tu cuenta institucional.';
+      $('authForm').hidden = false;
+      $('forgotPassword').hidden = false;
+      $('passwordRecoveryForm').hidden = true;
+      $('inviteReturnLogin').hidden = true;
       appShell.inert = true;
       appShell.style.filter = 'blur(1.5px)';
       renderDashboard();
@@ -445,6 +476,9 @@
       $('authForm').hidden = true;
       $('forgotPassword').hidden = true;
       $('passwordRecoveryForm').hidden = false;
+      $('inviteReturnLogin').hidden = true;
+      $('authTitle').textContent = 'Restablece tu contraseña';
+      $('authDescription').textContent = 'Elige una contraseña nueva y confírmala para continuar.';
       appShell.inert = true;
       appShell.style.filter = 'blur(1.5px)';
       return;
@@ -452,6 +486,9 @@
     $('authForm').hidden = false;
     $('forgotPassword').hidden = false;
     $('passwordRecoveryForm').hidden = true;
+    $('inviteReturnLogin').hidden = true;
+    $('authTitle').textContent = 'Ingresar al panel';
+    $('authDescription').textContent = 'Usa las credenciales de tu cuenta institucional.';
     overlay.classList.add('hidden');
     appShell.inert = false;
     appShell.style.filter = '';
@@ -522,6 +559,22 @@
     }
     try {
       await Backend.updatePassword(password);
+      if (invitationPasswordSetup) {
+        invitationPasswordSaved = true;
+        $('newPassword').value = '';
+        $('confirmPassword').value = '';
+        let signOutWarning = '';
+        try {
+          await Backend.signOut();
+        } catch (error) {
+          signOutWarning = ` La contraseña se guardó, pero no se pudo cerrar la sesión: ${error.message}`;
+        }
+        history.replaceState(null, document.title, location.pathname);
+        $('authStatus').textContent = `Contraseña configurada. Tu cuenta sigue pendiente de activación por un administrador; podrás iniciar sesión cuando esté habilitada.${signOutWarning}`;
+        $('authStatus').className = `form-status ${signOutWarning ? 'warning' : 'success'}`;
+        updateUserPanel();
+        return;
+      }
       passwordRecovery = false;
       $('newPassword').value = '';
       $('confirmPassword').value = '';
@@ -554,6 +607,24 @@
     }
     if (event.detail.status === 'error') {
       $('authStatus').textContent = `No se pudo validar la sesión: ${event.detail.error?.message || 'error desconocido'}`;
+      $('authStatus').className = 'form-status error';
+      updateUserPanel();
+      return;
+    }
+    if (event.detail.status === 'invite-password-setup') {
+      invitationPasswordSetup = true;
+      invitationLinkError = false;
+      if (!invitationPasswordSaved) {
+        $('authStatus').textContent = '';
+        $('authStatus').className = 'form-status';
+      }
+      updateUserPanel();
+      return;
+    }
+    if (event.detail.status === 'invite-link-error') {
+      invitationPasswordSetup = true;
+      invitationLinkError = true;
+      $('authStatus').textContent = event.detail.error?.message || 'No se pudo validar el enlace de invitación.';
       $('authStatus').className = 'form-status error';
       updateUserPanel();
       return;

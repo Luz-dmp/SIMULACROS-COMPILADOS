@@ -12,6 +12,7 @@ import {
   isInitialInactiveProfile,
   messageOf,
   parseAllowedOrigins,
+  publicAuthRedirectUrl,
   RequestError,
   validateUserInput,
 } from "./core.ts";
@@ -535,7 +536,7 @@ Deno.serve(async (request: Request) => {
         throw new RequestError("Escribe un correo electrónico válido.");
       }
       operationDetails = { email, name, role, areas };
-      const redirectTo = origin ? `${origin}/` : undefined;
+      const redirectTo = publicAuthRedirectUrl("invite");
       const result = await configureInvitation(email, { name, role, areas }, {
         invite: async () => {
           const { data, error } = await service.auth.admin.inviteUserByEmail(
@@ -690,7 +691,7 @@ Deno.serve(async (request: Request) => {
       if (!target) throw new Error("No existe una cuenta Auth con ese correo.");
       targetId = target.id;
       const { error } = await service.auth.resetPasswordForEmail(email, {
-        ...(origin ? { redirectTo: `${origin}/` } : {}),
+        redirectTo: publicAuthRedirectUrl(),
       });
       if (error) throw error;
       const auditError = await recordOperation(

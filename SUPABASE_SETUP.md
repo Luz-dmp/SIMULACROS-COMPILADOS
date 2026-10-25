@@ -157,7 +157,9 @@ Confirma que la consulta insertó exactamente una fila. Asigna las áreas admini
 
 - Mantén confirmación de correo habilitada.
 - Configura un proveedor SMTP propio en **Authentication → SMTP Settings** para invitaciones y recuperación. El SMTP de prueba tiene límites y no es una opción de producción.
-- En **Authentication → URL Configuration**, establece el sitio y permite las URLs de redirección del origen local y del dominio HTTPS de despliegue.
+- Para GitHub Pages, establece como **Site URL** `https://luz-dmp.github.io/SIMULACROS-COMPILADOS/` y permite en **Authentication → URL Configuration → Redirect URLs** `https://luz-dmp.github.io/SIMULACROS-COMPILADOS/**`. Añade un origen local solo si se necesita en pruebas; las invitaciones creadas desde Catalyst usan la URL pública, no el origen local del administrador.
+- La invitación vuelve a `https://luz-dmp.github.io/SIMULACROS-COMPILADOS/?flow=invite`. La aplicación procesa la sesión del enlace exclusivamente para establecer la contraseña y luego cierra la sesión; el perfil permanece inactivo hasta que un administrador lo active. La plantilla **Authentication → Email Templates → Invite user** debe enlazar `{{ .ConfirmationURL }}` para que Supabase aplique el `redirectTo` de la invitación.
+- Los enlaces de recuperación también vuelven a la URL pública de Pages. La plantilla **Reset password** debe conservar `{{ .ConfirmationURL }}`. Verifica manualmente que las plantillas no contengan destinos `localhost` codificados.
 - Añade factores MFA a las cuentas administrativas según la política de la organización.
 - El botón de recuperación envía un enlace mediante Auth. La vista de retorno acepta la nueva contraseña (mínimo 12 caracteres en el formulario).
 

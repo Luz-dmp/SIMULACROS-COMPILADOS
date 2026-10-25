@@ -6,12 +6,23 @@ import {
   invitationHttpResult,
   isInitialInactiveProfile,
   parseAllowedOrigins,
+  publicAuthRedirectUrl,
   RequestError,
   validateUserInput,
 } from "./core.ts";
 
 const localAdminOrigin = "http://127.0.0.1:3000";
 const localAdminOrigins = [localAdminOrigin];
+
+Deno.test("uses the published GitHub Pages URL for invite and recovery links", () => {
+  const base = "https://luz-dmp.github.io/SIMULACROS-COMPILADOS/";
+  if (publicAuthRedirectUrl() !== base) {
+    throw new Error("Auth recovery did not use the published application URL.");
+  }
+  if (publicAuthRedirectUrl("invite") !== `${base}?flow=invite`) {
+    throw new Error("Invitation redirect did not preserve the Pages path and flow.");
+  }
+});
 
 function assertCorsOrigin(response: Response, expected: string | null): void {
   const actual = response.headers.get("Access-Control-Allow-Origin");
