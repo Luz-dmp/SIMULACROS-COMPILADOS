@@ -1,0 +1,73 @@
+/* ============================================================
+   INGLÉS · diseño de la plantilla (réplica del generador de inglés)
+   Todo va aislado bajo .ing-page para no tocar el resto del cuadernillo.
+   ============================================================ */
+.ing-page {--p:#9b7bdc;--k:#fbadf0;--ln:linear-gradient(90deg,var(--p),var(--k));--lv:linear-gradient(180deg,var(--p),var(--k));
+    width:210mm;height:297mm;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.18);position:relative;flex-shrink:0;overflow:hidden;font-family:'Times New Roman',Times,serif;color:#000;}
+.ing-page .fb {position:absolute;z-index:3}
+.ing-page .fb.t,
+.ing-page .fb.b {left:0;right:0;height:3.2mm;background:var(--ln)}
+.ing-page .fb.t {top:0}
+.ing-page .fb.b {bottom:0}
+.ing-page .fb.l,
+.ing-page .fb.r {top:0;bottom:0;width:3.2mm}
+.ing-page .fb.l {left:0;background:var(--lv)}
+.ing-page .fb.r {right:0;background:linear-gradient(180deg,var(--k),var(--p))}
+.ing-page .page-pad {position:absolute;inset:3.2mm;padding:9mm 11mm;z-index:1;overflow:hidden;}
+.ing-page .page-inner {font-size:calc(16px * var(--s,1));line-height:1.25;}
+.ing-page .page-num-badge {position:absolute;bottom:6mm;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--p),var(--k));color:#fff;font-weight:700;font-size:9px;padding:3px 12px;border-radius:8px;z-index:4}
+.ing-page .overflow-warn {position:absolute;bottom:6mm;left:10mm;font-size:9px;color:#c23b3b;font-weight:700;background:#ffe9e9;padding:2px 8px;border-radius:4px;z-index:5}
+.ing-page .gb {border:1.5px solid transparent;border-radius:12px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,var(--p),var(--k)) border-box}
+.ing-page .gb.sm {border-radius:6px}
+.ing-page .gl {height:2px;background:var(--ln)}
+.ing-page .gv {width:2px;background:var(--lv)}
+.ing-page .hp {width:36mm;margin:0 auto 7mm;padding:4mm 0;border-radius:3.5mm;background:linear-gradient(135deg,var(--p),var(--k));color:#fff;text-align:center;font-weight:700;font-size:1.35em}
+.ing-page .pt {text-align:center;font-weight:700;margin:0 0 6mm}
+.ing-page .ins {text-align:center;font-weight:700;margin:0 0 6mm}
+.ing-page .sub {margin:0 0 5mm}
+.ing-page .tt {text-align:center;font-weight:700;margin:6mm 0 3mm}
+.ing-page .rp {display:inline-flex;align-items:center;gap:7px;background:#ececec;border-radius:7px;padding:4px 9px;font:700 10.5px Arial,sans-serif}
+.ing-page .rp .bx {display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #666;border-radius:6px;padding:2px 7px}
+.ing-page .rc {width:19px;height:19px;border-radius:50%;border:1.3px solid #777;display:inline-flex;align-items:center;justify-content:center;font-weight:400;font-size:11px}
+.ing-page .rc.on {background:#bdbdbd;font-weight:700;border-color:#555}
+.ing-page .rrow {display:flex;justify-content:flex-end;margin:3mm 0 4mm}
+.ing-page .p1w {margin:0 10mm}
+.ing-page .exb {padding:6mm 8mm 7mm;margin-bottom:0}
+.ing-page .exr {display:flex;justify-content:space-between;align-items:center;margin-top:5mm}
+.ing-page .p1i {display:flex;align-items:center;margin-bottom:7mm}
+.ing-page .p1s {flex:0 0 60%;padding:8mm 3mm}
+.ing-page .p1o {margin-left:10mm}
+.ing-page .p2c {display:flex;height:128mm;margin-top:4mm}
+.ing-page .p2l {flex:0 0 60%;display:flex;flex-direction:column;padding:2mm 8mm 0 6mm}
+.ing-page .p2r {flex:1;display:flex;flex-direction:column;padding:2mm 0 0 14mm}
+.ing-page .p2c .h {font-weight:700}
+.ing-page .ls {flex:1;display:flex;flex-direction:column;justify-content:space-around}
+.ing-page .hl {background:#a68be0;border-radius:4px;padding:1px 6px;font-weight:700;display:inline-block}
+.ing-page .ex3 .bub-row {display:flex;justify-content:center;gap:6mm;align-items:center;margin:3mm 0 6mm;font-family:Arial,sans-serif;font-size:.7em}
+.ing-page .bub {padding:2mm 4mm;margin-bottom:2mm;border-radius:10px}
+.ing-page .bcol {display:flex;flex-direction:column;align-items:flex-start}
+.ing-page .qc {display:flex;margin-top:2mm}
+.ing-page .qc>div {flex:1;padding:0 3mm}
+.ing-page .qc>.gv {flex:0 0 2px;padding:0}
+.ing-page .qi {padding:4mm 0 5mm;background:var(--ln) left bottom/100% 2px no-repeat;line-height:1.35}
+.ing-page .qg {display:grid;grid-template-columns:1fr 1fr;margin-top:2mm}
+.ing-page .qg>div {padding:4mm 4mm 5mm;line-height:1.35;background:var(--ln) left bottom/100% 2px no-repeat}
+.ing-page .qg>div:nth-child(odd) {background:var(--ln) left bottom/100% 2px no-repeat,var(--lv) right top/2px 100% no-repeat}
+.ing-page .qg>.wide {grid-column:1/3;background:var(--ln) left bottom/100% 2px no-repeat}
+.ing-page .cbx,
+.ing-page .rbx {padding:5mm 6mm;margin:0 0 6mm;overflow:hidden}
+.ing-page .ct {text-align:center;font-weight:700;font-size:1.5em;margin-bottom:2mm}
+.ing-page .cp {text-align:justify;line-height:1.35}
+.ing-page .exl {display:flex;justify-content:space-between;align-items:center;margin:2mm 0 3mm 4mm}
+.ing-page .ctb {display:grid;row-gap:5.5mm;margin:6mm 0 0 18mm}
+.ing-page .photo-box {float:left;width:34mm;height:34mm;margin:0 5mm 2mm 0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ing-page .photo-box img {width:100%;height:100%;object-fit:contain;display:block}
+.ing-page .photo-box.placeholder {border:1.5px dashed #d8b8e8;border-radius:8px;color:#cbb0dd}
+.ing-page .photo-box.placeholder svg {width:1.7em;height:1.7em}
+
+/* Ajustes de integración con el cuadernillo */
+.ing-page { height: 296.8mm; margin: 0 auto 18px; }
+@media print { .ing-page .overflow-warn { display: none; } }
+
+/* Marca de agua común del cuadernillo */
+.ing-page .wm { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: fill; pointer-events: none; z-index: 0; }

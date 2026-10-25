@@ -1,0 +1,7 @@
+CATALYST EDUCATION · SIMULACROS Y COMPILADOS
+
+La aplicación requiere autenticación y backend Supabase configurados. No hay perfiles de demostración. No abras index.html como file://; sirve esta carpeta por HTTP local o despliega en HTTPS.
+
+Pasos de configuración, migraciones, primer administrador, SMTP, RLS, Edge Function, almacenamiento, copias de seguridad y despliegue: consulta SUPABASE_SETUP.md.
+
+La importación DOCX y el diseño actual de impresión siguen en el navegador. La plantilla documental no se modificó. El botón de PDF abre el diálogo de impresión; el PDF resultante todavía no se guarda automáticamente en el backend.

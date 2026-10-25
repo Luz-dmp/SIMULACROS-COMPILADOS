@@ -1,0 +1,7 @@
+project_id = "catalyst-education"
+
+[functions.admin-users]
+verify_jwt = true
+
+[functions.cleanup-generated-pdfs]
+verify_jwt = false

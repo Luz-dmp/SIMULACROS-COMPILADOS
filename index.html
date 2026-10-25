@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalyst · Generador de simulacros</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/ingles.css">
+</head>
+<body data-mode="home">
+
+<div id="authOverlay" class="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="auth-card">
+    <div class="auth-brand">CATALYST</div>
+    <p class="auth-kicker">Acceso seguro · Catalyst Education</p>
+    <h2 id="authTitle">Ingresar al panel</h2>
+    <p class="auth-note">Usa las credenciales de tu cuenta institucional.</p>
+    <form id="authForm" class="auth-form">
+      <label class="field auth-field">Correo electrónico
+        <input id="authEmail" name="email" type="email" required autocomplete="username">
+      </label>
+      <label class="field auth-field">Contraseña
+        <input id="authPassword" name="password" type="password" required autocomplete="current-password">
+      </label>
+      <div id="authStatus" class="form-status" role="status" aria-live="polite"></div>
+      <button class="primary auth-submit" type="submit">Iniciar sesión</button>
+    </form>
+    <form id="passwordRecoveryForm" class="auth-form" hidden>
+      <label class="field auth-field">Nueva contraseña
+        <input id="newPassword" type="password" minlength="12" required autocomplete="new-password">
+      </label>
+      <label class="field auth-field">Confirmar contraseña
+        <input id="confirmPassword" type="password" minlength="12" required autocomplete="new-password">
+      </label>
+      <button class="primary auth-submit" type="submit">Guardar nueva contraseña</button>
+    </form>
+    <button id="forgotPassword" class="linkbtn" type="button">Olvidé mi contraseña</button>
+    <div class="auth-meta">La sesión, el rol y los permisos se validan mediante el servicio de autenticación y políticas de acceso del servidor.</div>
+  </div>
+</div>
+
+<div class="app-shell" id="appShell">
+
+<!-- ================= INICIO ================= -->
+<div id="home">
+  <div class="home-box">
+    <header class="home-masthead">
+      <div class="home-logo"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>CATALYST</div>
+      <span class="brand-edition">EDUCATION <b>·</b> STUDIO</span>
+    </header>
+    <div id="homeMain">
+      <section class="home-intro">
+        <span class="eyebrow"><i></i> TU ESPACIO DE CREACIÓN</span>
+        <h1>Ideas que se convierten<br><em>en grandes evaluaciones.</em></h1>
+        <p>Diseña, organiza y prepara materiales educativos en un solo lugar.</p>
+      </section>
+      <div class="home-grid">
+        <button class="hbtn hbtn-sim" id="goSim">
+          <span class="hbtn-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M12 5h17l9 9v29H12z"/><path d="M29 5v10h9M18 24h14M18 31h14M18 38h8"/></svg></span>
+          <span class="hbtn-meta">DOS SESIONES <i>·</i> PORTADA</span>
+          <b>Simulacro completo</b>
+          <span class="hbtn-copy">Importa el documento y prepara el cuadernillo de ambas sesiones.</span>
+          <span class="hbtn-cta">Comenzar <i aria-hidden="true">↗</i></span>
+        </button>
+        <button class="hbtn hbtn-comp" id="goCmp">
+          <span class="hbtn-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 12.5A4.5 4.5 0 0 1 12.5 8H40v30H12.5A4.5 4.5 0 0 1 8 33.5z"/><path d="M8 14h32M17 22h16M17 28h11M17 34h13"/></svg></span>
+          <span class="hbtn-meta">POR ÁREA <i>·</i> A TU MEDIDA</span>
+          <b>Crear compilado</b>
+          <span class="hbtn-copy">Selecciona un área y reúne las preguntas para tu propio material.</span>
+          <span class="hbtn-cta">Elegir área <i aria-hidden="true">↗</i></span>
+        </button>
+        <button class="hbtn hbtn-mini" id="goMini">
+          <span class="hbtn-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M24 14v11l8 5M18 5h12"/></svg></span>
+          <span class="hbtn-meta">FORMATO BREVE <i>·</i> MÁX. 12 PREGUNTAS</span>
+          <b>Mini-simulacro</b>
+          <span class="hbtn-copy">Arma una práctica corta y enfocada por área.</span>
+          <span class="hbtn-cta">Elegir área <i aria-hidden="true">↗</i></span>
+        </button>
+      </div>
+    </div>
+    <div id="userDashboard" class="user-dashboard hidden">
+      <div class="dashboard-header">
+        <div>
+          <div class="kicker">Panel del usuario</div>
+          <h2 id="dashboardTitle">Mi espacio</h2>
+        </div>
+        <button id="dashboardClose" class="linkbtn">Cerrar</button>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dashboard-card accent">
+          <span>Rol</span>
+          <strong id="dashboardRole">Tutor</strong>
+        </div>
+        <div class="dashboard-card">
+          <span>Áreas</span>
+          <strong id="dashboardAreas">-</strong>
+        </div>
+        <div class="dashboard-card">
+          <span>Materiales visibles</span>
+          <strong id="dashboardDocs">0</strong>
+        </div>
+      </div>
+      <section id="adminUsers" class="admin-users" hidden>
+        <div class="admin-section-heading">
+          <div><div class="kicker">Administración</div><h3>Gestión de usuarios</h3></div>
+          <button id="userCreateNew" type="button" class="secondary-button">＋ Crear usuario</button>
+        </div>
+        <p class="admin-security-note">Las cuentas se crean mediante invitación por correo. La confirmación del correo y el estado activo del perfil son requisitos separados; las contraseñas las gestiona el proveedor de autenticación. Las invitaciones parcialmente configuradas ofrecen reintento seguro o cancelación.</p>
+        <label class="field user-search">Buscar usuarios<input id="userSearch" type="search" placeholder="Nombre o correo"></label>
+        <div id="userStatus" class="form-status" role="status" aria-live="polite"></div>
+        <div id="userDirectoryLoading" class="directory-state loading" role="status" aria-live="polite" hidden>
+          <span class="state-spinner" aria-hidden="true"></span><span>Cargando directorio seguro…</span>
+        </div>
+        <div id="userDirectoryError" class="directory-state error" role="alert" hidden>
+          <div><strong>No se pudo consultar el directorio</strong><p id="userDirectoryErrorMessage"></p></div>
+          <button id="userRetryLoad" type="button" class="secondary-button">Reintentar</button>
+        </div>
+        <form id="userForm" class="user-form" hidden novalidate>
+          <h4 id="userFormTitle">Crear usuario</h4>
+          <input id="userEditId" type="hidden">
+          <div class="user-form-grid">
+            <label class="field">Nombre completo<input id="userName" name="name" type="text" maxlength="80" required autocomplete="name"></label>
+            <label class="field">Correo electrónico<input id="userEmail" name="email" type="email" maxlength="160" required autocomplete="email"></label>
+            <label class="field">Rol<select id="userRole" name="role" required><option value="tutor">Tutor</option><option value="admin">Administrador</option></select></label>
+            <fieldset id="userAreas" class="area-checks">
+              <legend>Áreas permitidas para tutores</legend>
+              <label><input type="checkbox" value="Mat"> Matemáticas</label>
+              <label><input type="checkbox" value="Lec"> Lectura Crítica</label>
+              <label><input type="checkbox" value="Soc"> Sociales y Ciudadanas</label>
+              <label><input type="checkbox" value="Nat"> Ciencias Naturales</label>
+              <label><input type="checkbox" value="Ing"> Inglés</label>
+            </fieldset>
+          </div>
+          <div class="user-form-actions">
+            <button id="userSubmit" class="primary" type="submit">Guardar usuario</button>
+            <button id="userFormCancel" type="button" class="secondary-button">Cancelar</button>
+            <button id="userVerifyInvite" type="button" class="secondary-button" hidden>Verificar directorio antes de reintentar</button>
+            <button id="userRetryInvite" type="button" class="secondary-button" hidden>Permitir reintento manual</button>
+          </div>
+        </form>
+        <div class="user-table-wrap">
+          <table class="user-table">
+            <thead><tr><th>Usuario</th><th>Rol</th><th>Áreas</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody id="userTableBody"></tbody>
+          </table>
+        </div>
+        <div id="userEmpty" class="user-empty" hidden>No hay usuarios que coincidan con la búsqueda.</div>
+      </section>
+      <section class="library-section">
+        <div class="library-heading">
+          <div><span class="eyebrow">TU CONTENIDO</span><h3>Biblioteca de materiales</h3></div>
+          <p>Consulta tus documentos, compilados y actividad reciente.</p>
+        </div>
+      <div class="dashboard-filters">
+        <input id="librarySearch" type="text" placeholder="Buscar por nombre o tipo">
+        <select id="libraryAreaFilter">
+          <option value="all">Todas las áreas</option>
+          <option value="Mat">Matemáticas</option>
+          <option value="Lec">Lectura Crítica</option>
+          <option value="Soc">Ciencias Sociales</option>
+          <option value="Nat">Ciencias Naturales</option>
+          <option value="Ing">Inglés</option>
+        </select>
+        <select id="libraryTypeFilter">
+          <option value="all">Todos los tipos</option>
+          <option value="documento">Documento original</option>
+          <option value="compilado">Compilado</option>
+          <option value="mini-simulacro">Mini-simulacro</option>
+          <option value="simulacro">Simulacro</option>
+        </select>
+        <select id="libraryDateFilter">
+          <option value="all">Cualquier fecha</option>
+          <option value="7d">Últimos 7 días</option>
+          <option value="30d">Últimos 30 días</option>
+          <option value="90d">Últimos 90 días</option>
+        </select>
+      </div>
+      <div id="dashboardLoadState" class="dashboard-load-state" role="status" aria-live="polite" hidden>
+        <span id="dashboardLoadMessage"></span>
+        <button id="dashboardRetry" type="button" class="secondary-button">Reintentar carga</button>
+      </div>
+      <p class="hint">Los documentos, compilaciones, clasificaciones e historial se guardan en el backend y se comparten con usuarios autorizados. Las preferencias de presentación pueden permanecer en este navegador.</p>
+      <div class="dashboard-lists">
+        <section class="dashboard-box">
+          <h3><span class="section-icon" aria-hidden="true">▤</span> Materiales guardados</h3>
+          <div id="libraryList" class="list-box empty">Todavía no has creado materiales.</div>
+        </section>
+        <section class="dashboard-box">
+          <h3><span class="section-icon" aria-hidden="true">◷</span> Actividad reciente</h3>
+          <div id="historyList" class="list-box empty">Sin movimientos recientes.</div>
+        </section>
+      </div>
+      </section>
+    </div>
+    <div id="homeAreas" style="display:none">
+      <section class="home-intro area-intro">
+        <span class="eyebrow"><i></i> NUEVO MATERIAL</span>
+        <h1>Elige tu <em>área de trabajo.</em></h1>
+        <p>Tu selección define el contenido y la identidad visual del material.</p>
+      </section>
+      <div class="area-grid">
+        <button class="acard" data-area="Mat">Matemáticas</button>
+        <button class="acard" data-area="Lec">Lectura Crítica</button>
+        <button class="acard" data-area="Soc">Ciencias Sociales</button>
+        <button class="acard" data-area="Nat">Ciencias Naturales</button>
+        <button class="acard" data-area="Ing">Inglés</button>
+      </div>
+      <button class="linkbtn" id="areasBack">← Volver</button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <header class="top">
+    <span class="logo"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>CATALYST<small>EDUCATION STUDIO</small></span></span>
+    <span class="tag"><span class="workspace-dot"></span> Generador de evaluaciones <i>·</i> Importa, revisa y prepara</span>
+    <span class="spacer"></span>
+    <div id="userChip" class="user-chip"></div>
+    <button id="btnHome" class="homebtn">← Inicio</button>
+    <button id="btnLogout" class="linkbtn subtle">Cerrar sesión</button>
+  </header>
+
+  <aside id="panel">
+    <h2>1 · Sube tu Word</h2>
+    <div id="dz" tabindex="0">
+      <div class="big">Arrastra aquí tu archivo .docx</div>
+      <div class="small">o haz clic para elegirlo</div>
+      <div class="file" id="fname"></div>
+      <input type="file" id="file" accept=".docx" hidden>
+    </div>
+    <div id="info"></div>
+    <details id="savedQuestionPicker">
+      <summary>Usar preguntas guardadas</summary>
+      <button type="button" id="loadQuestionBank">Cargar preguntas disponibles</button>
+      <label class="field">Buscar por documento o enunciado<input type="search" id="questionBankSearch" autocomplete="off"></label>
+      <p id="questionBankStatus" class="hint" aria-live="polite"></p>
+      <div id="questionBankList" class="question-list"></div>
+      <button type="button" id="buildFromQuestionBank" class="primary" disabled>Crear vista previa con la selección</button>
+    </details>
+    <section id="importReview" class="classification-summary" hidden>
+      <p id="importReviewStatus" aria-live="polite"></p>
+      <button type="button" id="btnSaveQuestions" class="primary">Guardar preguntas revisadas</button>
+    </section>
+    <div id="classificationSummary" class="classification-summary" hidden></div>
+    <details id="classificationReview" class="classification-review" hidden>
+      <summary>Revisar clasificación pregunta por pregunta</summary>
+      <p class="hint">La clasificación automática es orientativa. Administración puede corregir el área; los casos dudosos permanecen «Por revisar».</p>
+      <div id="questionReviewList" class="question-review-list"></div>
+    </details>
+    <ul id="warns"></ul>
+
+    <h2>2 · Qué generar</h2>
+    <div class="row"><input type="checkbox" id="chkS1" checked><label for="chkS1">Primera sesión</label></div>
+    <div class="row"><input type="checkbox" id="chkS2" checked><label for="chkS2">Segunda sesión</label></div>
+    <div class="row"><input type="checkbox" id="chkCover" checked><label for="chkCover">Incluir portada en cada sesión</label></div>
+
+    <details>
+      <summary>Datos de la portada</summary>
+      <label class="field">Código · sesión 1<input type="text" id="code1"></label>
+      <label class="field">N.º de preguntas · sesión 1 (se cuenta solo)<input type="number" id="nq1" min="0"></label>
+      <label class="field">Código · sesión 2<input type="text" id="code2"></label>
+      <label class="field">N.º de preguntas · sesión 2 (se cuenta solo)<input type="number" id="nq2" min="0"></label>
+      <label class="field">Duración / etiqueta final<input type="text" id="tagHoras" value="4 HORAS"></label>
+      <label class="field">Texto etiqueta de cierre<input type="text" id="tagExtra" value="ESTRATEGIA"></label>
+      <label class="field">«Ten en cuenta» (una línea por ítem)<textarea id="txtTen"></textarea></label>
+      <label class="field">«¿Cómo realizar este simulacro?» (una línea por ítem)<textarea id="txtComo"></textarea></label>
+      <label class="field">Contacto columna 1 (2 líneas)<textarea id="txtCA"></textarea></label>
+      <label class="field">Contacto columna 2 (2 líneas)<textarea id="txtCB"></textarea></label>
+      <label class="field">Ilustración portada sesión 1<input type="file" id="img1" accept="image/*"></label>
+      <label class="field">Ilustración portada sesión 2<input type="file" id="img2" accept="image/*"></label>
+      <label class="field">Imagen del QR<input type="file" id="imgQR" accept="image/*"></label>
+    </details>
+
+    <details id="ingBox" style="display:none">
+      <summary>Inglés · diseño de la plantilla</summary>
+      <div class="hint">El Inglés se arma con el diseño de la plantilla (1 Parte = 1 página). Aquí puedes corregir el texto que se leyó del Word.</div>
+      <label class="field" id="ingWrap1" style="display:none">Texto de Inglés · sesión 1<textarea id="txtIng1" class="ingtxt" spellcheck="false"></textarea></label>
+      <label class="field" id="ingWrap2" style="display:none">Texto de Inglés · sesión 2<textarea id="txtIng2" class="ingtxt" spellcheck="false"></textarea></label>
+      <div class="hint" id="ingParts"></div>
+      <div class="hint"><b>Fotos de los textos (opcional)</b></div>
+      <label class="field">Foto Parte 4A<input type="file" accept="image/*" data-ph="p4a"></label>
+      <label class="field">Foto Parte 4B<input type="file" accept="image/*" data-ph="p4b"></label>
+      <label class="field">Foto Parte 5<input type="file" accept="image/*" data-ph="p5"></label>
+      <label class="field">Foto Parte 7<input type="file" accept="image/*" data-ph="p7"></label>
+      <label class="field">Foto Parte 7A<input type="file" accept="image/*" data-ph="p7a"></label>
+      <label class="field">Foto Parte 7B<input type="file" accept="image/*" data-ph="p7b"></label>
+      <details>
+        <summary>Cómo escribir el texto de Inglés</summary>
+        <pre class="ingguide" id="ingGuide"></pre>
+      </details>
+    </details>
+
+    <details>
+      <summary>Marca de agua</summary>
+      <label class="field">Opacidad: <span id="wmVal">100</span>%<input type="range" id="wmOp" min="0" max="100" value="100"></label>
+      <label class="field">Usar otra imagen<input type="file" id="wmFile" accept="image/*"></label>
+    </details>
+
+    <h2>3 · Descarga</h2>
+    <button class="primary" id="btnPrint" disabled>Descargar PDF</button>
+    <div class="hint">Al confirmar la revisión se guardan el documento y las preguntas. Al descargar, el PDF se guarda en tu equipo y se intenta añadir a la biblioteca; si se confirma su guardado, estará disponible durante 15 días.</div>
+  </aside>
+
+  <aside id="panelC">
+    <div class="areachip" id="cAreaChip"></div>
+    <button class="linkbtn" id="cChange">Cambiar área</button>
+
+    <div id="cGeneric">
+      <h2>1 · Sube tu Word</h2>
+      <div id="dzC" tabindex="0">
+        <div class="big">Arrastra aquí tu archivo .docx</div>
+        <div class="small">o haz clic para elegirlo</div>
+        <div class="file" id="cFname"></div>
+        <input type="file" id="cFile" accept=".docx" hidden>
+      </div>
+      <div id="cInfo"></div>
+      <section id="cImportReview" class="classification-summary" hidden>
+        <p id="cImportReviewStatus" aria-live="polite"></p>
+        <button type="button" id="btnSaveCompiledQuestions" class="primary">Guardar preguntas revisadas</button>
+      </section>
+      <div id="cClassificationSummary" class="classification-summary" hidden></div>
+      <details id="cClassificationReview" class="classification-review" hidden>
+        <summary>Revisar clasificación pregunta por pregunta</summary>
+        <div id="cQuestionReviewList" class="question-review-list"></div>
+      </details>
+      <ul id="cWarns"></ul>
+    </div>
+
+    <div id="cEnglish">
+      <h2>1 · Partes del compilado</h2>
+      <div id="cCards"></div>
+      <div class="addbar">
+        <select id="cAddType">
+          <option value="1">Parte 1 · Avisos</option>
+          <option value="2">Parte 2 · Emparejar</option>
+          <option value="3">Parte 3 · Diálogos</option>
+          <option value="4">Parte 4 · Texto con espacios (3 opc.)</option>
+          <option value="5">Parte 5 · Lectura (3 opc.)</option>
+          <option value="6">Parte 6 · Lectura (4 opc.)</option>
+          <option value="7">Parte 7 · Texto con espacios (4 opc.)</option>
+        </select>
+        <button id="cAdd" class="primary">+ Añadir</button>
+      </div>
+      <section class="ing-import" aria-labelledby="ingImportTitle">
+        <div class="ing-import-heading">
+          <span class="ing-import-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M13 5h16l9 9v29H13z"/><path d="M29 5v10h9M19 25h13M19 32h10M24 19v12m-5-5 5 5 5-5"/></svg></span>
+          <div><span class="eyebrow">IMPORTACIÓN EN LOTE</span><h3 id="ingImportTitle">Añadir partes desde Word</h3></div>
+        </div>
+        <p class="ing-import-copy">Selecciona uno o varios documentos .docx. Se analizarán sus secciones de Inglés y podrás revisar las partes antes de descargar.</p>
+        <input type="file" id="cImport" accept=".docx" multiple hidden>
+        <label for="cImport" class="ing-import-trigger"><span aria-hidden="true">＋</span> Seleccionar archivos Word <small>DOCX · puedes elegir varios</small></label>
+        <div id="cImportFiles" class="ing-import-files" aria-live="polite" hidden></div>
+        <div class="hint ing-import-status" id="cImpInfo" role="status" aria-live="polite"></div>
+        <p class="ing-import-footnote">Si repites una Parte (por ejemplo dos Partes 1) se rotulan solas 1A, 1B, 1C… Cada Parte sale en 1 página.</p>
+      </section>
+      <fieldset class="ing-images">
+        <legend>Imágenes de apoyo <span>OPCIONAL</span></legend>
+        <p>Asocia una imagen con la parte de lectura indicada. Se conserva al generar el material.</p>
+        <div class="ing-image-grid">
+          <label class="field">Parte 4A<input type="file" accept="image/*" data-ph="p4a"><span class="ing-image-file" data-file-for="p4a" aria-live="polite">Sin archivo seleccionado</span></label>
+          <label class="field">Parte 4B<input type="file" accept="image/*" data-ph="p4b"><span class="ing-image-file" data-file-for="p4b" aria-live="polite">Sin archivo seleccionado</span></label>
+          <label class="field">Parte 5<input type="file" accept="image/*" data-ph="p5"><span class="ing-image-file" data-file-for="p5" aria-live="polite">Sin archivo seleccionado</span></label>
+          <label class="field">Parte 7<input type="file" accept="image/*" data-ph="p7"><span class="ing-image-file" data-file-for="p7" aria-live="polite">Sin archivo seleccionado</span></label>
+          <label class="field">Parte 7A<input type="file" accept="image/*" data-ph="p7a"><span class="ing-image-file" data-file-for="p7a" aria-live="polite">Sin archivo seleccionado</span></label>
+          <label class="field">Parte 7B<input type="file" accept="image/*" data-ph="p7b"><span class="ing-image-file" data-file-for="p7b" aria-live="polite">Sin archivo seleccionado</span></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <section id="cQuestionSelector" hidden>
+      <h2>2 · Selecciona las preguntas</h2>
+      <div class="question-actions">
+        <button type="button" id="cSelectAll">Seleccionar todas</button>
+        <button type="button" id="cSelectNone">Quitar todas</button>
+      </div>
+      <p id="cQuestionCount" class="hint" aria-live="polite"></p>
+      <div id="cQuestionList" class="question-list"></div>
+    </section>
+    <section id="cQuestionEditor" class="classification-review" hidden>
+      <h2>Editar pregunta seleccionada</h2>
+      <label class="field">Pregunta<select id="cEditQuestion"></select></label>
+      <label class="field">Contexto compartido<textarea id="cEditContext" rows="3"></textarea></label>
+      <label class="field">Enunciado<textarea id="cEditPrompt" rows="3"></textarea></label>
+      <div id="cEditOptions"></div>
+      <p id="cEditStatus" class="hint" aria-live="polite"></p>
+    </section>
+
+    <h2>3 · Portada y colores</h2>
+    <div class="row"><input type="checkbox" id="cCover" checked><label for="cCover">Incluir portada</label></div>
+    <details open>
+      <summary>Colores</summary>
+      <div class="colors">
+        <label>Color 1<input type="color" id="cCol1"></label>
+        <label>Color 2<input type="color" id="cCol2"></label>
+      </div>
+      <div class="row"><input type="checkbox" id="cColPages" checked><label for="cColPages">Aplicar también a las páginas</label></div>
+      <div class="btnrow"><button id="cColArea">Colores del área</button><button id="cColBrand">Rosa / naranja</button></div>
+    </details>
+    <details>
+      <summary>Datos de la portada</summary>
+      <label class="field">Código<input type="text" id="cCode"></label>
+      <label class="field">N.º de preguntas (se cuenta solo)<input type="number" id="cNq" min="0" readonly></label>
+      <label class="field">Etiqueta del compilado<input type="text" id="cLabel"></label>
+      <label class="field">Duración<input type="text" id="cHoras"></label>
+      <label class="field">Texto etiqueta de cierre<input type="text" id="cExtra"></label>
+      <label class="field">Título del cuadro derecho<input type="text" id="cComoTitle"></label>
+      <label class="field">«Ten en cuenta» (una línea por ítem)<textarea id="cTen"></textarea></label>
+      <label class="field">Lista del cuadro derecho (una línea por ítem)<textarea id="cComo"></textarea></label>
+      <label class="field">Contacto columna 1 (2 líneas)<textarea id="cCA"></textarea></label>
+      <label class="field">Contacto columna 2 (2 líneas)<textarea id="cCB"></textarea></label>
+      <label class="field">Ilustración de la portada<input type="file" id="cImg" accept="image/*"></label>
+      <label class="field">Imagen del QR<input type="file" id="cQR" accept="image/*"></label>
+    </details>
+    <details>
+      <summary>Marca de agua</summary>
+      <label class="field">Opacidad: <span id="cWmVal">100</span>%<input type="range" id="cWmOp" min="0" max="100" value="100"></label>
+      <label class="field">Usar otra imagen<input type="file" id="cWmFile" accept="image/*"></label>
+    </details>
+
+    <h2>4 · Descarga</h2>
+    <button class="primary" id="btnPrintC" disabled>Descargar PDF</button>
+    <div class="hint">El PDF se descarga en tu equipo y queda disponible en la biblioteca e historial durante 15 días.</div>
+  </aside>
+
+  <main id="view">
+    <div id="toolbar">
+      <button id="zOut" title="Alejar">−</button><span id="zoomLbl">100%</span><button id="zIn" title="Acercar">+</button><button id="zFit">Ajustar</button>
+    </div>
+    <div id="empty">
+      <div class="ico-big">📄</div>
+      <p><b>Sube el Word del simulacro</b> y aquí aparecerá el cuadernillo ya diseñado: portada, páginas a dos columnas, color por área, marca de agua y numeración.</p>
+    </div>
+    <div id="busy">Armando páginas…</div>
+    <div id="stage"></div>
+  </main>
+</div>
+</div>
+
+<script src="js/jszip.min.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/config.js"></script>
+<script src="js/docx-parser.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/cover.js"></script>
+<script src="js/ingles.js"></script>
+<script src="js/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/backend-config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/pdf-generator.js"></script>
+<script src="js/app.js"></script>
+<script src="js/compilado.js"></script>
+</body>
+</html>
