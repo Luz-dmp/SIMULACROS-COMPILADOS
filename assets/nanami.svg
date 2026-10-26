@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 300" role="img" aria-labelledby="nanami-title nanami-description">
+  <title id="nanami-title">Nanami, el zorro de Catalyst Education</title>
+  <desc id="nanami-description">Ilustración de zorro naranja con orejas triangulares, antifaz de zorro, mejillas claras y cola grande alrededor del cuerpo.</desc>
+  <defs>
+    <linearGradient id="orange" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a1a"/>
+      <stop offset="1" stop-color="#f26a0a"/>
+    </linearGradient>
+    <linearGradient id="tail" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8a14"/>
+      <stop offset="1" stop-color="#e85a05"/>
+    </linearGradient>
+  </defs>
+  <style>
+    .pupil { animation: glance 6s ease-in-out infinite; }
+    @keyframes glance {
+      0%, 40%, 100% { transform: translateX(0); }
+      50%, 70% { transform: translateX(3px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pupil { animation: none; }
+    }
+  </style>
+  <g stroke-linejoin="round">
+    <path d="M54 148C2 196 6 266 84 292c54 16 112-2 136-38-68 18-130-14-150-78Z" fill="#14202b"/>
+    <path d="M58 166c-34 40-28 90 30 112 42 14 92 2 118-26-66 12-118-20-132-72Z" fill="url(#tail)"/>
+    <path d="M70 232c26 30 80 42 126 26" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+    <path d="M210 166c36 39 22 92-26 118 28-40 32-78 14-102Z" fill="#14202b"/>
+
+    <path d="m60 16 53 50c16-6 38-6 54 0l53-50 34 112-14 12 16 20-28 6 8 22-30 4c-16 16-40 28-66 36-26-8-50-20-66-36l-30-4 8-22-28-6 16-20-14-12Z" fill="#14202b" stroke="#14202b" stroke-width="6"/>
+    <path d="m68 42 45 38c16-6 38-6 54 0l45-38 26 83c-10 25-42 45-98 51-56-6-88-26-98-51Z" fill="url(#orange)"/>
+    <path d="m60 104 40-20 12 14-36 28Zm160 0-40-20-12 14 36 28Z" fill="#e0550a" opacity=".35"/>
+
+    <path d="m72 58 32 28-46 32Zm136 0-32 28 46 32Z" fill="#fff"/>
+    <path d="m72 60 16 14-22 22Zm136 0-16 14 22 22Z" fill="#ffb066" opacity=".9"/>
+
+    <path d="m42 126 10 12-12 12 20 4-4 16 24 2c16 24 38 38 60 52 22-14 44-28 60-52l24-2-4-16 20-4-12-12 10-12c-28 12-58 24-76 24-10 15-14 35-22 55-8-20-12-40-22-55-18 0-48-12-76-24Z" fill="#fff"/>
+    <path d="M46 138c24 12 52 24 68 26 8 20 16 36 26 48-40-12-78-40-94-74Zm188 0c-24 12-52 24-68 26-8 20-16 36-26 48 40-12 78-40 94-74Z" fill="#dfe6ea" opacity=".6"/>
+
+    <path d="M118 98c6 27 12 57 22 82 10-25 16-55 22-82-10-6-34-6-44 0Z" fill="url(#orange)"/>
+    <path d="M120 120c4 22 10 40 14 56m26-56c-4 22-10 40-14 56" fill="none" stroke="#14202b" stroke-width="5" stroke-linecap="round"/>
+
+    <g>
+      <path d="M78 104q26-6 50 15-26 15-50-15Z" fill="#fff" stroke="#14202b" stroke-width="5"/>
+      <ellipse class="pupil" cx="108" cy="116" rx="7.5" ry="8" fill="#14202b"/>
+      <circle cx="105" cy="112" r="2.6" fill="#fff"/>
+    </g>
+    <g>
+      <path d="M202 104q-26-6-50 15 26 15 50-15Z" fill="#fff" stroke="#14202b" stroke-width="5"/>
+      <ellipse class="pupil" cx="172" cy="116" rx="7.5" ry="8" fill="#14202b"/>
+      <circle cx="169" cy="112" r="2.6" fill="#fff"/>
+    </g>
+
+    <path d="M124 178q16-10 32 0-3 18-16 24-13-6-16-24Z" fill="#14202b"/>
+    <ellipse cx="134" cy="178" rx="6" ry="2.6" fill="#fff" opacity=".6"/>
+    <path d="M140 202v10" fill="none" stroke="#14202b" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
